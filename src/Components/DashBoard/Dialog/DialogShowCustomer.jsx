@@ -94,8 +94,8 @@ export function DialogShowCustomer({ customer }) {
                     <p id="dateAssigned">
                         Calorías: {data.Calories} | Fecha asignada: {data.startDate}
                     </p>
-                    <button id="Butoon-record" onClick={changePlan}>
-                        {clicked ? 'Actual' : 'Anterior'}
+                    <button className="w-1/4 mt-2 px-4 py-2 bg-lime-800 text-white rounded" onClick={changePlan}>
+                        {clicked ? 'Mostrar Plan Actual' : 'Mostart Plan Anterior'}
                     </button>
                     <div id="Plan-Dialog-Customer">
                         <section>

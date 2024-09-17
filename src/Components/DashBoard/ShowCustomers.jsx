@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReactDOM from 'react-dom';
+import Swal from "sweetalert2";
 
 import { doc, updateDoc } from 'firebase/firestore';
 import { dataBase } from '../../DataBase/Firebase';
@@ -12,10 +13,24 @@ const ActiveCustomer = async (active, ID) => {
     try {
         const docRef = doc(dataBase, 'Customers', ID);
         await updateDoc(docRef, { Active: !active });
-        alert('Actualizado correctamente');
-        window.location.reload();
+        Swal.fire({
+            icon: 'success',
+            title: 'Se han aplicado los cambios',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+        }).then(() => {
+            window.location.reload();
+        });
     } catch (error) {
         console.error("Error updating document: ", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            timer: 1500,
+            timerProgressBar: true
+        });
     }
 };
 
@@ -53,9 +68,9 @@ export function ShowCustomers() {
     const dialog = dialogInfo.isOpen && (
         <>
             <div className="fixed inset-0 bg-black opacity-50" onClick={closeDialog}></div>
-            <dialog open className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-lg w-80">
+            <dialog open className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-lg w-120">
                 {dialogContent()}
-                <button onClick={closeDialog} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Cerrar</button>
+                <button onClick={closeDialog} className="mt-2 px-4 py-2 bg-red-400 text-white rounded">Cerrar</button>
             </dialog>
         </>
     );
