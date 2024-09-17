@@ -10,7 +10,7 @@ export function Navigation() {
   const navigate = useNavigate();
 
   return (
-    <aside className="w-60 bg-white h-full p-4 fixed left-0 top-14 border-r-2 border-gray-200 shadow-md">
+    <aside className="fixed w-60 bg-white h-full p-4 left-0 top-14 border-r-2 border-gray-200 shadow-md ">
       <div className="space-y-2 mt-2">
         <button
           className="flex items-center w-full p-3 text-black rounded-md hover:bg-gray-100 transition-colors duration-200 text-sm font-sans font-medium leading-5 text-left whitespace-nowrap overflow-hidden text-ellipsis"

@@ -63,6 +63,7 @@ export default function Form() {
   };
 
   return (
+  
     <div className="bg-white px-10 py-20 rounded-3xl border-gray-600">
       <h1 className="text-5xl font-semibold">Bienvenid@ de vuelta</h1>
       <p className="font-medium text-lg text-gray-500 mt-4">Por favor, introduce tus credenciales.</p>

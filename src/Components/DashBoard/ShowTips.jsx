@@ -36,7 +36,7 @@ export function ShowTips() {
     const dialog = activeDialog.isOpen && (
         <>
             <div className="fixed inset-0 bg-black opacity-50" onClick={closeDialog}></div>
-            <dialog open className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-lg w-80">
+            <dialog open className="fixed top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-lg w-120 z-50">
                 {dialogContent()}
                 <button onClick={closeDialog} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Cerrar</button>
             </dialog>
