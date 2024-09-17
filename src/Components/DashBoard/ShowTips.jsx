@@ -59,7 +59,7 @@ export function ShowTips() {
                                 </div>
                                 <div className="flex space-x-2">
                                     <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => showDialog('ver', tip)}>Ver</button>
-                                    <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', tip)}>Act</button>
+                                    <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', tip)}>Edit</button>
                                 </div>
                             </div>
                         </li>

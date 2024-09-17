@@ -10,7 +10,7 @@ export function Navigation() {
   const navigate = useNavigate();
 
   return (
-    <aside className="w-60 bg-white h-full p-4 fixed left-0 top-14 border-r-4 border-gray-200 shadow-md">
+    <aside className="w-60 bg-white h-full p-4 fixed left-0 top-14 border-r-2 border-gray-200 shadow-md">
       <div className="space-y-2 mt-2">
         <button
           className="flex items-center w-full p-3 text-black rounded-md hover:bg-gray-100 transition-colors duration-200 text-sm font-sans font-medium leading-5 text-left whitespace-nowrap overflow-hidden text-ellipsis"
@@ -31,7 +31,7 @@ export function Navigation() {
           onClick={() => navigate(pages.AddRecipe)}
         >
           <img src="RecipeAdd.png" alt="Añadir receta" className="w-5 h-5 mr-3" />
-          <span className="flex-1">Añadir receta</span>
+          <span className="flex-1">Ver/Añadir receta</span>
         </button>
         <button
           className="flex items-center w-full p-3 text-black rounded-md hover:bg-gray-100 transition-colors duration-200 text-sm font-sans font-medium leading-5 text-left whitespace-nowrap overflow-hidden text-ellipsis"

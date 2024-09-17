@@ -12,6 +12,8 @@ import { RowSteps } from "./RowSteps"
 import { useState, useRef } from "react"
 import { UpImage } from "./UpImage";
 
+import { ShowRecipes } from "../DashBoard/ShowRecipes";
+
 const defaultState = {
     Ingredients: [''],
     Steps: ['']
@@ -188,6 +190,12 @@ export function AddRecipe(){
                           <UpImage setImageUrl={setImageUrl}/>
                         </section>
             </div>
+            <div className="flex flex-col flex-1 space-y-4">
+              <section className="flex-1 bg-white p-4 rounded border-2 border-gray-300 shadow-md overflow-y-auto" style={{ maxHeight: "360px" }}>
+                      <h2 className="text-xl font-semibold mb-4">Recetas</h2>
+                      <ShowRecipes/>
+                    </section>
+                </div>
         </div>
         </>
     )

@@ -4,6 +4,8 @@ import CryptoJS from 'crypto-js';
 import { useState } from "react";
 import { dataBase } from './DataBase/Firebase';
 import * as React from 'react';
+import Swal from 'sweetalert2';
+
 
 export default function Form() {
   const [error, setError] = useState(null);
@@ -26,22 +28,43 @@ export default function Form() {
         const passSalt = fields.pass + userData.salt;
         const passHash = CryptoJS.SHA256(passSalt).toString(CryptoJS.enc.Hex);
         if (passHash === userData.passAdmin) {
+          Swal.fire({
+            icon:"success",
+            title:"Bienvenido",
+            text:"Has iniciado sesion correctamente.",
+          
+ 
+          });
+          
           navigate('/Dashboard');
         } else {
-          setError('Invalid email or password');
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Correo o contraseña incorrectos',
+          });
         }
       } else {
-        setError('Invalid email or password');
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Correo o contraseña incorrectos',
+        });
       }
     } catch (error) {
       setError('An error occurred, please try again later');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred, please try again later',
+      });
       console.error('Login failed:', error);
     }
   };
 
   return (
     <div className="bg-white px-10 py-20 rounded-3xl border-gray-600">
-      <h1 className="text-5xl font-semibold">Bienvenid@ de vuelta{userData === null ? null : userData.userAdmin}</h1>
+      <h1 className="text-5xl font-semibold">Bienvenid@ de vuelta</h1>
       <p className="font-medium text-lg text-gray-500 mt-4">Por favor, introduce tus credenciales.</p>
       <form onSubmit={handleMove} className="mt-8">
         <div>
@@ -69,13 +92,12 @@ export default function Form() {
             />
             <label className="ml-2 font-medium text-base" htmlFor="remember">Recordarme por 30 días</label>
           </div>
-          <button className="font-medium text-base text-cyan-800">Olvidaste tu contraseña? ni pedo</button>
+          <button className="font-medium text-base text-cyan-800">Olvidaste tu contraseña?</button>
         </div>
         <div className="mt-8 flex flex-col gap-y-4">
           <button className="active:scale-[.98] active:duration-75 transition-all hover:scale-[1.02] ease-in-out py-3 rounded-xl bg-cyan-950 text-white text-lg font-bold">Iniciar Sesión</button>
         </div>
       </form>
-      {error && <p style={{color: 'red'}}>{error}</p>}
     </div>
   );
 }

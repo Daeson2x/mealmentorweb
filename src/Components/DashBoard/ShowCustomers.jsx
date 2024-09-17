@@ -83,7 +83,7 @@ export function ShowCustomers() {
                                     >
                                         {customer.Active ? 'Desac' : 'Activar'}
                                     </button>
-                                    <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', customer)}>Act</button>
+                                    <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', customer)}>Edit</button>
                                 </div>
                             </div>
                         </li>
