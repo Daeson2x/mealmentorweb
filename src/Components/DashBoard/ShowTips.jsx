@@ -45,27 +45,28 @@ export function ShowTips() {
 
     return (
         <>
-            {ReactDOM.createPortal(dialog, document.body)}
-            {loading ? (
-                <h1 className="text-center">Cargando...</h1>
-            ) : (
-                <ol className="space-y-4 p-4">
-                    {data?.map((tip) => (
-                        <li key={tip.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
-                            <div className="flex items-center p-4">
-                                <img src="recomendation.webp" alt="Imagen de consejo" className="w-12 h-12 rounded-full mr-4" />
-                                <div className="flex-1">
-                                    <p className="font-semibold text-lg">{tip.Title}</p>
-                                </div>
-                                <div className="flex space-x-2">
-                                    <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => showDialog('ver', tip)}>Ver</button>
-                                    <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', tip)}>Edit</button>
-                                </div>
-                            </div>
-                        </li>
-                    ))}
-                </ol>
-            )}
-        </>
+  {ReactDOM.createPortal(dialog, document.body)}
+  {loading ? (
+    <h1 className="text-center text-lg">Cargando...</h1>
+  ) : (
+    <ol className="space-y-4 p-4 max-h-[80vh] overflow-y-auto">
+      {data?.map((tip) => (
+        <li key={tip.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center p-4">
+            <img src="recomendation.webp" alt="Imagen de consejo" className="w-12 h-12 rounded-full mb-2 sm:mb-0 sm:mr-4" />
+            <div className="flex-1">
+              <p className="font-semibold text-lg">{tip.Title}</p>
+            </div>
+            <div className="flex space-x-2 mt-2 sm:mt-0">
+              <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => showDialog('ver', tip)}>Ver</button>
+              <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', tip)}>Edit</button>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  )}
+</>
+
     );
 }

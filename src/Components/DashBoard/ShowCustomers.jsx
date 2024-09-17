@@ -77,36 +77,37 @@ export function ShowCustomers() {
 
     return (
         <>
-            {dialogInfo.isOpen && ReactDOM.createPortal(dialog, document.body)}
-            {loading ? (
-                <h1 className="text-center">No existen clientes...</h1>
-            ) : (
-                <div className="p-4">
-                    <ul className="space-y-4" style={{ maxHeight: '80vh' }}>
-                        {data?.map(customer => (
-                            <li key={customer.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
-                                <div className="flex items-center p-4">
-                                    <img src="User.png" alt="Imagen de usuario" className="w-12 h-12 rounded-full mr-4" />
-                                    <div className="flex-1">
-                                        <p className="font-semibold text-lg">{customer.Name + ' ' + customer.LastName}</p>
-                                        <span className="text-sm text-gray-500">Objetivo: {customer.Goal} | IMC: {customer.IMC}</span>
-                                    </div>
-                                    <div className="flex space-x-2">
-                                        <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => showDialog('ver', customer)}>Ver</button>
-                                        <button 
-                                            className={`px-3 py-1 rounded ${customer.Active ? 'bg-green-500 rounded' : 'rounded bg-red-500'} text-white`} 
-                                            onClick={() => ActiveCustomer(customer.Active, customer.id)}
-                                        >
-                                            {customer.Active ? 'Desac' : 'Activar'}
-                                        </button>
-                                        <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', customer)}>Edit</button>
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </>
+  {dialogInfo.isOpen && ReactDOM.createPortal(dialog, document.body)}
+  {loading ? (
+    <h1 className="text-center text-lg">No existen clientes...</h1>
+  ) : (
+    <div className="p-4">
+      <ul className="space-y-4 max-h-[80vh] overflow-y-auto">
+        {data?.map(customer => (
+          <li key={customer.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center p-4">
+              <img src="User.png" alt="Imagen de usuario" className="w-12 h-12 rounded-full mb-2 sm:mb-0 sm:mr-4" />
+              <div className="flex-1">
+                <p className="font-semibold text-lg">{customer.Name + ' ' + customer.LastName}</p>
+                <span className="text-sm text-gray-500">Objetivo: {customer.Goal} | IMC: {customer.IMC}</span>
+              </div>
+              <div className="flex space-x-2 mt-2 sm:mt-0">
+                <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => showDialog('ver', customer)}>Ver</button>
+                <button 
+                  className={`px-3 py-1 rounded ${customer.Active ? 'bg-green-500' : 'bg-red-500'} text-white`} 
+                  onClick={() => ActiveCustomer(customer.Active, customer.id)}
+                >
+                  {customer.Active ? 'Desactivar' : 'Activar'}
+                </button>
+                <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', customer)}>Edit</button>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</>
+
     );
 }
