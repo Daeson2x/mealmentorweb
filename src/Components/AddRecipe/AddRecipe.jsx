@@ -3,6 +3,7 @@ import "./AddRecipe.css"
 //import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { dataBase } from '../../DataBase/Firebase';
 import { collection, addDoc } from "firebase/firestore"
+import Swal from "sweetalert2";
 
 import { TopLogo } from '../Misc/TopLogo'
 import { Navigation } from '../Misc/Navigation'
@@ -77,11 +78,26 @@ export function AddRecipe(){
         const addCustomerRef = collection(dataBase, 'Recipe');
         addDoc(addCustomerRef, fields)
         .then(() => {
-          alert('Receta añadida correctamente');
+          Swal.fire({
+            icon: 'success',
+            title: 'Receta añadida correctamente',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+        }).then(() => {
+            window.location.reload();
+        });
           form.current.reset();
         })
         .catch((error) => {
             console.error("Error adding document: ", error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+              timer: 1500,
+              timerProgressBar: true
+          });
         });
     };
 
@@ -90,113 +106,148 @@ export function AddRecipe(){
 
     return(
         <>
-        <TopLogo/>
-        <div className="Addrecipe-Div">
-            <div className="Box">
-                <Navigation/>
-                <section className="Recipe-Box">
-                    <form className="Recipe-Form" onSubmit={handleSubmit} ref={form}>
-                        <div className="Top-Recipe">
-                            <section>
-                                <input 
-                                name='Title'
-                                type="text" 
-                                required 
-                                placeholder="Titulo de la receta"/>
-                            </section>
-                            <section className="Top-Info">
-                                <label>Duracion:</label>
-                                <input 
-                                name='estimatedTime' 
-                                type="number" 
-                                required 
-                                placeholder="Duracion"/>
-                                <label>Dificultad:</label>
-                                <input 
-                                name="Difficulty"
-                                type="number" 
-                                required 
-                                placeholder="Dificultad"/>
-                            </section>
-                            <section className="Top-Info">
-                                <label>Precio:</label>
-                                <input 
-                                name="Price"
-                                type="number" 
-                                required 
-                                placeholder="Precio"/>
-                                <label>Calorias:</label>
-                                <input 
-                                name="Calories"
-                                type="number" 
-                                required 
-                                placeholder="Calorias"/>
-                                <label>Horario:</label>
-                                <input 
-                                name='schedule' 
-                                placeholder='Horario'
-                                multiple
-                                list='options'
-                                required/>
-                                <datalist id='options'>
-                                    <option value='Desayuno'>Desayuno</option>
-                                    <option value='Comida'>Comida</option>
-                                    <option value='Cena'>Cena</option>
-                                </datalist>
-                                </section>
-                        </div>
-                        <div className="Ingredients">
-                        <label>Ingredientes:</label><br/>
-                        {rows.map((row, index) => (
-                            <RowIngredients
-                            {...row}
-                            onChange={(name, value) => handleOnChange(index, name, value)}
-                            onRemove={() => handleOnRemove(index)}
-                            key={index}
-                            />
-                        ))}
-                        <input 
-                        onClick={handleOnAdd} 
-                        type="button" 
-                        value='Agregar'
-                        className="add-button"
-                        />
-                        </div>
-                        <div className="Preferences">
-                        <label>Pasos:</label><br/>
-                        {rowsSteps.map((row, index) => (
-                            <RowSteps
-                            {...row}
-                            onChange={(name, value) => handleOnChangeSteps(index, name, value)}
-                            onRemove={() => handleOnRemoveSteps(index)}
-                            key={index}
-                            />
-                        ))}
-                        <input 
-                        onClick={handleOnAddSteps} 
-                        type="button" 
-                        value='Agregar'
-                        className="add-button"
-                        />
-                        </div>
-                        <input 
-                        className="add-recipe" 
-                        type="submit" 
-                        value="Añadir"
-                        />
-                    </form>
-                </section>
-                <section className="Image-Recipe">
-                          <UpImage setImageUrl={setImageUrl}/>
-                        </section>
+        <TopLogo />
+<div className="Addrecipe-Div lg:ml-60">
+  <Navigation />
+  <div className="container mx-auto p-6">
+    <div className="bg-white rounded-lg shadow-md p-6 flex flex-col lg:flex-row">
+      <section className="w-full lg:w-1/2 lg:mr-4">
+        <h2 className="text-2xl font-bold mb-4">Añadir Nueva Receta</h2>
+        <form className="space-y-4" onSubmit={handleSubmit} ref={form}>
+          <div>
+            <input
+              type="text"
+              name="Title"
+              placeholder="Título de la receta"
+              required
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label>Duración:</label>
+              <input
+                type="number"
+                name="estimatedTime"
+                placeholder="Duración"
+                required
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
             </div>
-            <div className="flex flex-col flex-1 space-y-4">
-              <section className="flex-1 bg-white p-4 rounded border-2 border-gray-300 shadow-md overflow-y-auto" style={{ maxHeight: "360px" }}>
-                      <h2 className="text-xl font-semibold mb-4">Recetas</h2>
-                      <ShowRecipes/>
-                    </section>
-                </div>
+            <div>
+              <label>Dificultad:</label>
+              <input
+                type="number"
+                name="Difficulty"
+                placeholder="Dificultad"
+                required
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div>
+              <label>Precio:</label>
+              <input
+                type="number"
+                name="Price"
+                placeholder="Precio"
+                required
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div>
+              <label>Calorías:</label>
+              <input
+                type="number"
+                name="Calories"
+                placeholder="Calorías"
+                required
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div>
+              <label>Horario:</label>
+              <input
+                type="text"
+                name="schedule"
+                placeholder="Horario"
+                list="options"
+                required
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+              <datalist id="options">
+                <option value="Desayuno" />
+                <option value="Comida" />
+                <option value="Cena" />
+              </datalist>
+            </div>
+          </div>
+          <div>
+            <label className="block font-semibold mb-1">Ingredientes (uno por línea)</label>
+            <div className="flex flex-col space-y-2 ">
+              {rows.map((row, index) => (
+                <RowIngredients
+                  {...row}
+                  onChange={(name, value) => handleOnChange(index, name, value)}
+                  onRemove={() => handleOnRemove(index)}
+                  key={index}
+                  className="block w-full "  // Asegurarse de que cada fila se muestre en bloque
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={handleOnAdd}
+              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 cursor-pointer mt-2"
+            >
+              Agregar Ingrediente
+            </button>
+          </div>
+          <div>
+            <label className="block font-semibold mb-1">Pasos de preparación</label>
+            <div className="flex flex-col space-y-2">
+              {rowsSteps.map((row, index) => (
+                <RowSteps
+                  {...row}
+                  onChange={(name, value) => handleOnChangeSteps(index, name, value)}
+                  onRemove={() => handleOnRemoveSteps(index)}
+                  key={index}
+                  className="block w-full"  // Asegurarse de que cada paso se muestre en bloque
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={handleOnAddSteps}
+              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 cursor-pointer mt-2"
+            >
+              Agregar Paso
+            </button>
+          </div>
+          <div>
+            <label className="block font-semibold mb-1">Imagen de la receta</label>
+            <UpImage setImageUrl={setImageUrl} />
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 cursor-pointer"
+            >
+              Añadir Receta
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section className="w-full lg:w-1/2 bg-white p-6 rounded-md border border-gray-300 shadow-md lg:ml-4 mt-6 lg:mt-0">
+        <h2 className="text-xl font-semibold mb-4">Recetas Existentes</h2>
+        <div className="max-h-[calc(100vh-250px)] overflow-y-auto">
+          <ShowRecipes />
         </div>
+      </section>
+    </div>
+  </div>
+</div>
+
         </>
     )
 }
