@@ -5,6 +5,7 @@ import { generateSalt } from '../Logic/generateSalt.mjs';
 import CryptoJS from 'crypto-js';
 import { dataBase } from '../../DataBase/Firebase';
 import { collection, addDoc } from "firebase/firestore";
+import Swal from "sweetalert2";
 
 export function AddCostumer() {
     const defaultCustomer = {
@@ -43,18 +44,33 @@ export function AddCostumer() {
         const addCustomerRef = collection(dataBase, 'Customers');
         addDoc(addCustomerRef, fields)
             .then(() => {
-                alert('Cliente añadido correctamente');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Receta añadida correctamente',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true
+                }).then(() => {
+                    window.location.reload();
+                });
                 form.current.reset();
             })
             .catch((error) => {
                 console.error("Error adding document: ", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    timer: 1500,
+                    timerProgressBar: true
+                });
             });
     };
 
     return (
-        <>
+        <><div className=' flex flex-col min-h-screen'>
             <TopLogo />
-            <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
+            <div className="flex flex-col flex-grow items-center bg-gray-100 p-4">
                 <div className="w-full max-w-3xl bg-white shadow-md rounded-lg p-6">
                     <Navigation />
                     <section className="mt-6">
@@ -206,6 +222,7 @@ export function AddCostumer() {
                         </div>
                     </section>
                 </div>
+            </div>
             </div>
         </>
     );

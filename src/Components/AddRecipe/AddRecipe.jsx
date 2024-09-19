@@ -107,7 +107,7 @@ export function AddRecipe(){
     return(
         <>
         <TopLogo />
-<div className="Addrecipe-Div lg:ml-60">
+<div className="Addrecipe-Div lg:ml-60 ">
   <Navigation />
   <div className="container mx-auto p-6 max-h-[calc(100vh-250px)]">
     <div className="bg-white rounded-lg shadow-md p-6 flex flex-col lg:flex-row">

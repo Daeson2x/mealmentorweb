@@ -49,7 +49,7 @@ export function ShowTips() {
   {loading ? (
     <h1 className="text-center text-lg">Cargando...</h1>
   ) : (
-    <ol className="space-y-4 p-4 max-h-[80vh] overflow-y-auto">
+    <ol className="space-y-4 p-4 overflow-y-auto " style={{ maxHeight: "440px" }}>
       {data?.map((tip) => (
         <li key={tip.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
           <div className="flex flex-col sm:flex-row items-start sm:items-center p-4">

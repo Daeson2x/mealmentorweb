@@ -45,25 +45,49 @@ export function ShowCustomersAP(){
     return(
         <>
         {activeDialog.isOpen && ReactDOM.createPortal(dialog, document.body)}
-        {loading ? <p style={{textAlign: 'center'}}>Cargando...</p>:
-         <ul className='ul-plan'>
-        {data?.map((customer) => (
-        <div className='Plan-Customer-Card' key={customer.id}>
-            <section className='Plan-Card-Top'>
-                <img src='User.png'/>
-                <div>
-                    <p>{customer.Name}</p>
-                    <span>Objetivo: {customer.Goal} | IMC: {customer.IMC}</span>
+        {loading ? (
+        <p className="text-center">Cargando...</p>
+        ) : (
+        <div className='p-4'>
+            <ul className="space-y-4 max-h-[75vh] overflow-y-auto">
+                {data?.map((customer) => (
+                <div
+                    className="flex items-center bg-white shadow rounded-lg p-4"
+                    key={customer.id}
+                >
+                    <section className="flex items-center">
+                    <img
+                        src="User.png"
+                        alt="User"
+                        className="w-12 h-12 rounded-full mr-4"
+                    />
+                    <div>
+                        <p className="text-lg font-semibold">{customer.Name}</p>
+                        <span className="text-gray-500">
+                        Objetivo: {customer.Goal} | IMC: {customer.IMC}
+                        </span>
+                    </div>
+                    </section>
+
+                    <section className="ml-auto flex space-x-2">
+                    <button
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded"
+                        onClick={() => showDialog('add', customer)}
+                    >
+                        Añadir
+                    </button>
+                    <button
+                        className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded"
+                        onClick={() => showDialog('act', customer)}
+                    >
+                        Actualizar
+                    </button>
+                    </section>
                 </div>
-            </section>
-            <section className='Plan-Card-Bot'>
-                <div className='circle-add' onClick={() => showDialog('add', customer)}>Add</div>
-                <div className='circle-upd' onClick={() => showDialog('act', customer)}>Act</div>
-            </section>
+                ))}
+            </ul>
         </div>
-        ))}
-        </ul>
-        }
+        )}
         </>
     );
 }

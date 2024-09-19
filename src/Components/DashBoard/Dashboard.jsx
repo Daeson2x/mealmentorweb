@@ -28,7 +28,7 @@ export function Dashboard() {
               </div>
               <div className="flex-1 space-y-4">
                 {/* Sección de Tips */}
-                <section className="bg-white p-4 rounded-3xl border-2 border-gray-300 shadow-md overflow-y-auto
+                <section className="bg-white p-4 rounded-3xl border-2 border-gray-300 shadow-md overflow-hidden
                   [&::-webkit-scrollbar]:w-2
                   [&::-webkit-scrollbar-track]:rounded-full
                   [&::-webkit-scrollbar-track]:bg-gray-100
