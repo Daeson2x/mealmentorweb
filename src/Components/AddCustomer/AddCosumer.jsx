@@ -5,7 +5,8 @@ import { generateSalt } from '../Logic/generateSalt.mjs';
 import CryptoJS from 'crypto-js';
 import { dataBase } from '../../DataBase/Firebase';
 import { collection, addDoc } from "firebase/firestore";
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
+
 
 export function AddCostumer() {
     const defaultCustomer = {
@@ -23,6 +24,7 @@ export function AddCostumer() {
     const form = useRef();
     const [changeCard, setChangeCard] = useState(defaultCustomer);
     const [active, setActive] = useState(true);
+    const [rawPassword, setRawPassword] = useState(""); // Para mostrar la contraseña sin el hash en la tarjeta
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -45,35 +47,35 @@ export function AddCostumer() {
         addDoc(addCustomerRef, fields)
             .then(() => {
                 Swal.fire({
+                    title: '¡Cliente añadido!',
+                    text: 'El cliente fue añadido correctamente.',
                     icon: 'success',
-                    title: 'Receta añadida correctamente',
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true
-                }).then(() => {
-                    window.location.reload();
+                    confirmButtonText: 'Aceptar'
                 });
                 form.current.reset();
+                setChangeCard(defaultCustomer); // Reiniciar la tarjeta después de añadir
+                setRawPassword(""); // Reiniciar la contraseña sin hash en la tarjeta
             })
             .catch((error) => {
-                console.error("Error adding document: ", error);
                 Swal.fire({
+                    title: 'Error',
+                    text: 'Hubo un error al añadir el cliente. Por favor, inténtalo de nuevo.',
                     icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                    timer: 1500,
-                    timerProgressBar: true
+                    confirmButtonText: 'Aceptar'
                 });
+                console.error("Error adding document: ", error);
             });
     };
 
+
     return (
-        <><div className=' flex flex-col min-h-screen'>
+        <>
             <TopLogo />
-            <div className="flex flex-col flex-grow items-center bg-gray-100 p-4">
+            <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
                 <div className="w-full max-w-3xl bg-white shadow-md rounded-lg p-6">
                     <Navigation />
                     <section className="mt-6">
+                        <h1 className='text-3xl font-semibold mb-4 text-center'>Añadir cliente</h1>
                         <form className="space-y-4" onSubmit={handleSubmit} ref={form}>
                             <div className="flex flex-col space-y-2">
                                 <input
@@ -100,10 +102,8 @@ export function AddCostumer() {
                                         }));
                                     }}
                                 />
-                                <input
+                                <select
                                     name='Goal'
-                                    placeholder='Objetivo'
-                                    list='options'
                                     className='block w-full p-2 border border-gray-300 rounded-lg'
                                     required
                                     onChange={(e) => {
@@ -112,13 +112,13 @@ export function AddCostumer() {
                                             Goal: e.target.value
                                         }));
                                     }}
-                                />
-                                <datalist id='options'>
+                                >
+                                    <option value='' disabled selected>Selecciona un objetivo</option>
                                     <option value='Bajar de peso'>Bajar de peso</option>
                                     <option value='Subir de peso'>Subir de peso</option>
                                     <option value='Subir de Masa'>Subir de Masa</option>
                                     <option value='Balanceado'>Balanceado</option>
-                                </datalist>
+                                </select>
                             </div>
                             <div className="flex flex-col space-y-2">
                                 <input
@@ -136,6 +136,7 @@ export function AddCostumer() {
                                 <input
                                     name='Password'
                                     placeholder='Contraseña'
+                                    type='password'
                                     className='block w-full p-2 border border-gray-300 rounded-lg'
                                     required
                                     onChange={(e) => {
@@ -143,6 +144,7 @@ export function AddCostumer() {
                                             ...prevState,
                                             Password: e.target.value
                                         }));
+                                        setRawPassword(e.target.value); // Guardar la contraseña sin hashear
                                     }}
                                 />
                                 <input
@@ -168,7 +170,7 @@ export function AddCostumer() {
                                     onChange={(e) => {
                                         setChangeCard(prevState => ({
                                             ...prevState,
-                                            Allergies: e.target.value
+                                            Allergies: e.target.value.split(/,\s*|\s*y\s*/)
                                         }));
                                     }}
                                 />
@@ -178,9 +180,9 @@ export function AddCostumer() {
                                         checked={active}
                                         onChange={() => setActive(!active)}
                                         className="form-checkbox"
-                                        id="alergias"
+                                        id="active"
                                     />
-                                    <label htmlFor='alergias' className="ml-2">{active ? 'Desactivar' : 'Activar'}</label>
+                                    <label htmlFor='active' className="ml-2">{active ? 'Desactivar' : 'Activar'}</label>
                                 </div>
                                 <input
                                     name='Preferences'
@@ -190,7 +192,7 @@ export function AddCostumer() {
                                     onChange={(e) => {
                                         setChangeCard(prevState => ({
                                             ...prevState,
-                                            Preferences: e.target.value
+                                            Preferences: e.target.value.split(/,\s*|\s*y\s*/) // Convertir string a array
                                         }));
                                     }}
                                 />
@@ -211,19 +213,19 @@ export function AddCostumer() {
                             </div>
                             <div className="mb-4">
                                 <p className="font-semibold">Usuario: {changeCard.UserName}</p>
-                                <p className="font-semibold">Contraseña: {changeCard.Password}</p>
+                                <p className="font-semibold">Contraseña: {rawPassword}</p> {/* Mostrar la contraseña real */}
                             </div>
                             <div>
                                 <p className="font-semibold">Alergias:</p>
-                                <p>{changeCard.Allergies}</p>
+                                <p>{Array.isArray(changeCard.Allergies) ? changeCard.Allergies.join(', ') : ''}</p> {/* Verificación de array */}
                                 <p className="font-semibold">Preferencias:</p>
-                                <p>{changeCard.Preferences}</p>
+                                <p>{Array.isArray(changeCard.Preferences) ? changeCard.Preferences.join(', ') : ''}</p> {/* Verificación de array */}
                             </div>
                         </div>
                     </section>
                 </div>
             </div>
-            </div>
         </>
     );
 }
+
