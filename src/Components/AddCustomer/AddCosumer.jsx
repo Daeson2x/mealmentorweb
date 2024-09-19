@@ -199,9 +199,9 @@ export function AddCostumer() {
                             </div>
                             <div>
                                 <p className="font-semibold">Alergias:</p>
-                                <p>{changeCard.Allergies.join(', ')}</p>
+                                <p>{changeCard.Allergies}</p>
                                 <p className="font-semibold">Preferencias:</p>
-                                <p>{changeCard.Preferences.join(', ')}</p>
+                                <p>{changeCard.Preferences}</p>
                             </div>
                         </div>
                     </section>
