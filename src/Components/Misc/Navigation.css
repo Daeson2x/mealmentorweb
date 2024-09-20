@@ -1,4 +1,4 @@
-.Navigation{
+/*.Navigation{
     height: 100%;
     width: 20%;
     background-color: #ecececbf;
@@ -34,10 +34,10 @@ aside img{
     height: 28px;
     width: 23px;
 }
-
-@media screen and (max-width: 768px) {
+*/
+/*@media screen and (max-width: 768px) {*/
     /* Estilos para pantallas con un ancho máximo de 768px (tablets y dispositivos móviles) */
-    .Navigation {
+    /*.Navigation {
         width: 100%;
     }
 
@@ -62,4 +62,4 @@ aside img{
     .Tips-Box {
         width: 95%;
     }
-}
+}*/
