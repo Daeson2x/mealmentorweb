@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 
 import { dataBase } from '../../../DataBase/Firebase';
 import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
+import Swal from 'sweetalert2';
 
 /* eslint-disable react/prop-types */
 export function DialogFormPlan({ customer }) {
@@ -38,9 +39,22 @@ export function DialogFormPlan({ customer }) {
     try {
       const addPlanRef = collection(dataBase, 'Plan');
       docRef = await addDoc(addPlanRef, fields);
-      alert(`Plan de ${customer.Name + ' ' + customer.LastName} añadido correctamente`);
+      Swal.fire({
+        title: 'Añadido correctamente!',
+        text: `Plan de ${customer.Name + ' ' + customer.LastName} añadido correctamente!`,
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+    }).then(() => {
+        window.location.reload();
+    });
       form.current.reset();
     } catch (error) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un error al añadir el plan al cliente. Por favor, inténtalo de nuevo.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+    });
       console.error("Error adding document: ", error);
     }
 

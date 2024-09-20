@@ -6,6 +6,8 @@ import { doc, updateDoc } from "firebase/firestore";
 
 import { useDoc } from "../../Hooks/useDoc";
 
+import Swal from 'sweetalert2';
+
 /* eslint-disable react/prop-types */
 export function DialogUpdatePlan({ customer }) {
     const currentDate = new Date().toISOString().split('T')[0];
@@ -28,9 +30,22 @@ export function DialogUpdatePlan({ customer }) {
             try {
                 const docRef = doc(dataBase, 'Plan', customer.plan_ID);
                 await updateDoc(docRef, fields);
-                alert("Plan actualizado correctamente");
+                Swal.fire({
+                    title: '¡Actualizado!',
+                    text: 'Plan actualizado correctamente!',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.reload();
+                });
                 form.current.reset();
             } catch (error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Hubo un error al actualizar el pland el cliente. Por favor, inténtalo de nuevo.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
                 console.error("Error updating document: ", error);
             }
         })();

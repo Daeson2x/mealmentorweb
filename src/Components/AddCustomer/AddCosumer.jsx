@@ -51,6 +51,8 @@ export function AddCostumer() {
                     text: 'El cliente fue añadido correctamente.',
                     icon: 'success',
                     confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.reload();
                 });
                 form.current.reset();
                 setChangeCard(defaultCustomer); // Reiniciar la tarjeta después de añadir
@@ -70,11 +72,12 @@ export function AddCostumer() {
 
     return (
         <>
+            <div className=' flex flex-col min-h-screen'>
             <TopLogo />
-            <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
+            <div className="flex flex-col flex-grow items-center bg-gray-100 p-4">
                 <div className="w-full max-w-3xl bg-white shadow-md rounded-lg p-6">
                     <Navigation />
-                    <section className="mt-6">
+                    <section className="mt-2">
                         <h1 className='text-3xl font-semibold mb-4 text-center'>Añadir cliente</h1>
                         <form className="space-y-4" onSubmit={handleSubmit} ref={form}>
                             <div className="flex flex-col space-y-2">
@@ -224,6 +227,7 @@ export function AddCostumer() {
                         </div>
                     </section>
                 </div>
+            </div>
             </div>
         </>
     );

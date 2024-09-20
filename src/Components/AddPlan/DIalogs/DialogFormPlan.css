@@ -1,4 +1,4 @@
-#Form-Dialog-Plan{
+/*#Form-Dialog-Plan{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -64,4 +64,4 @@
     border-radius: 5px;
     resize: none;
     height: 125px;
-}
+}*/
