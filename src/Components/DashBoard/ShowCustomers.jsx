@@ -66,14 +66,21 @@ export function ShowCustomers() {
     };
 
     const dialog = dialogInfo.isOpen && (
-        <>
-            <div className="fixed inset-0 bg-black opacity-50" onClick={closeDialog}></div>
-            <dialog open className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-lg w-120 z-50 ">
-                {dialogContent()}
-                <button onClick={closeDialog} className="mt-2 px-4 py-2 bg-red-400 text-white rounded">Cerrar</button>
-            </dialog>
-        </>
-    );
+      <>
+          {/* Fondo oscuro que cubre toda la pantalla */}
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={closeDialog}></div>
+
+          {/* Modal centrado */}
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+                  {dialogContent()}
+                  <button onClick={closeDialog} className="mt-4 w-full px-4 py-2 bg-red-500 text-white rounded active:scale-[.98] active:duration-75 transition-all hover:scale-[1.02] ease-in-out">
+                      Cerrar
+                  </button>
+              </div>
+          </div>
+      </>
+  );
 
     return (
         <>

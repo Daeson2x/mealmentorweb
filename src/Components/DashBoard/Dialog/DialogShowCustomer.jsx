@@ -1,4 +1,4 @@
-import './DialogShowCustomer.css';
+
 import { dataBase } from '../../../DataBase/Firebase';
 import { useState, useEffect } from 'react';
 import { getDoc, doc } from 'firebase/firestore';
@@ -25,7 +25,6 @@ export function DialogShowCustomer({ customer }) {
                 } else {
                     console.log('No such document in Plan!');
                 }
-                
             } catch (error) {
                 console.error("Error getting document:", error);
             }
@@ -67,47 +66,55 @@ export function DialogShowCustomer({ customer }) {
         setLoading(false);
     };
 
+    const arrayDays = Array(7).fill(null);
+
     return (
-        <section className="Dialog-Box-Customer">
-            <div id="Name-Dialog-Customer">
-                <img src="User.png" alt="User" />
-                <div>
-                    <p>{customer.Name + ' ' + customer.LastName}</p>
-                    <span>Objetivo: {customer.Goal} | IMC: {customer.IMC}</span>
+        <section className="p-4 sm:p-2 bg-white rounded-lg shadow-lg w-full max-w-lg mx-auto">
+            <div id="Name-Dialog-Customer" className="flex items-center mb-2">
+                <img src="User.png" alt="User" className="w-8 h-8 rounded-full" />
+                <div className="ml-4">
+                    <p className="text-lg font-bold">{customer.Name + ' ' + customer.LastName}</p>
+                    <span className="text-sm">Objetivo: {customer.Goal} | IMC: {customer.IMC}</span>
                 </div>
             </div>
-            <div id="UserName-Dialog-Customer">
-                <p>Usuario: {customer.UserName}</p>
-                <p>Contraseña: <span>{customer.Password}</span></p>
+            <div id="UserName-Dialog-Customer" className="mb-2">
+                <p className="text-md font-medium">Usuario: {customer.UserName}</p>
             </div>
-            <div id="AllergiesanPreferences-Dialog-Customer">
-                <p>Alergias:</p>
-                <p>{customer.Allergies.join(', ')}</p>
-                <p>Preferencias:</p>
-                <p>{customer.Preferences.join(', ')}</p>
+            <div id="AllergiesanPreferences-Dialog-Customer" className="mb-2">
+                <p className="font-medium">Alergias: {customer.Allergies.join(', ')} </p>
+                <p className="font-medium mt-2">Preferencias: {customer.Preferences.join(', ')}</p>
             </div>
 
             {loading ? (
-                <h1 style={{ textAlign: 'center' }}>No existe plan...</h1>
+                <h1 className="text-center text-xl">No existe plan...</h1>
             ) : (
-                <>
-                    <p id="dateAssigned">
+                <div className='overflow-y-auto'>
+                    <p id="dateAssigned" className="text-lg">
                         Calorías: {data.Calories} | Fecha asignada: {data.startDate}
                     </p>
-                    <button className="w-1/4 mt-2 px-4 py-2 bg-lime-800 text-white rounded" onClick={changePlan}>
-                        {clicked ? 'Mostrar Plan Actual' : 'Mostart Plan Anterior'}
+                    <button className="mt-2 w-full bg-lime-800 text-white rounded px-4 py-2" onClick={changePlan}>
+                        {clicked ? 'Mostrar Plan Actual' : 'Mostrar Plan Anterior'}
                     </button>
-                    <div id="Plan-Dialog-Customer">
-                        <section>
-                            {data.content?.map((day, index) => (
-                                <li key={index} id="contentDay">
-                                    Día {index + 1}
-                                    <textarea readOnly rows="10" cols="25" defaultValue={day} />
-                                </li>
+                    
+                    <section className='overflow-y-auto'>
+                        <section className="grid grid-cols-2 gap-4 overflow-y-auto">
+                            {arrayDays.map((_, day) => (
+                                <div key={day} className="space-y-2">
+                                    <label className="block text-lg font-medium text-gray-700">
+                                        Día {day + 1}
+                                    </label>
+                                    <textarea
+                                        readOnly
+                                        name={'Day' + (day + 1)}
+                                        defaultValue={data.content[day]}
+                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 resize-none"
+                                    />
+                                </div>
                             ))}
                         </section>
-                    </div>
-                </>
+                    </section>
+                    
+                </div>
             )}
         </section>
     );
