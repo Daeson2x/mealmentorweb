@@ -47,6 +47,8 @@ export function DialogUpdateRecipe({ recipe }) {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Dificultad (1-5):</label>
                         <input 
+                            min={1}
+                            max={5}
                             type="number"
                             name="Difficulty"
                             defaultValue={recipe.Difficulty} 

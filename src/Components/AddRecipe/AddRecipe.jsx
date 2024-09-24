@@ -135,8 +135,10 @@ export function AddRecipe(){
               />
             </div>
             <div>
-              <label>Dificultad:</label>
+              <label>Dificultad (1-5):</label>
               <input
+              min={1}
+               max={5}
                 type="number"
                 name="Difficulty"
                 placeholder="Dificultad"
