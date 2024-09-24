@@ -41,9 +41,9 @@ export function ShowCustomersAP() {
             <div className="fixed inset-0 flex items-center justify-center z-50">
                 <div className="bg-white p-6 rounded-lg shadow-lg w-100hv max-w-3xl">
                     {dialogContent()}
-                    <button onClick={closeDialog} className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                        Cerrar
-                    </button>
+                    <button onClick={closeDialog} className="mt-4 w-full px-4 py-2 bg-red-500 text-white rounded active:scale-[.98] active:duration-75 transition-all hover:scale-[1.02] ease-in-out">
+                      Cerrar
+                  </button>
                 </div>
             </div>
         </>
