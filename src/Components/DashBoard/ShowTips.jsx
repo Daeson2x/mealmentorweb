@@ -58,8 +58,8 @@ export function ShowTips() {
             ) : (
                 <ul className="space-y-4 p-4 overflow-y-auto" style={{ maxHeight: "440px" }}>
                     {data?.map((tip) => (
-                        <li key={tip.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
-                            <div className="flex items-center p-4">
+                        <li key={tip.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden ">
+                            <div className="flex items-center p-4 flex-col sm:flex-row">
                                 <img src="recomendation.webp" alt="Imagen de consejo" className="w-12 h-12 rounded-full mr-4" />
                                 <div className="flex-1">
                                     <p className="font-semibold text-lg">{tip.Title}</p>

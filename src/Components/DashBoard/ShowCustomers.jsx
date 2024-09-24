@@ -92,7 +92,7 @@ export function ShowCustomers() {
       <ul className="space-y-4 max-h-[80vh] overflow-y-auto">
         {data?.map(customer => (
           <li key={customer.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center p-4">
+            <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row items-start sm:items-center p-4 overflow-auto">
               <img src="User.png" alt="Imagen de usuario" className="w-12 h-12 rounded-full mb-2 sm:mb-0 sm:mr-4" />
               <div className="flex-1">
                 <p className="font-semibold text-lg">{customer.Name + ' ' + customer.LastName}</p>

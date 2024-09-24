@@ -59,7 +59,7 @@ export function ShowRecipes() {
                 <ul className="space-y-4 p-4">
                     {data?.map((recipe) => (
                         <li key={recipe.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
-                            <div className="flex items-center p-4">
+                            <div className="flex flex-col sm:flex-row md:flex-row lg:flex-col xl:flex-row items-start p-4">
                                 <img src="RecipeAdd.png" alt="Imagen de receta" className="w-12 h-12 rounded-full mr-4" />
                                 <div className="flex-1">
                                     <p className="font-semibold text-lg">{recipe.Title}</p>

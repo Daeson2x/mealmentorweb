@@ -59,10 +59,10 @@ export function ShowCustomersAP() {
                     <ul className="space-y-4 max-h-[75vh] overflow-y-auto">
                         {data?.map((customer) => (
                             <div
-                                className="flex items-center bg-white shadow rounded-lg p-4"
+                                className="flex flex-col sm:flex-row items-center bg-white shadow rounded-lg p-4"
                                 key={customer.id}
                             >
-                                <section className="flex items-center">
+                                <section className="flex items-center mr-auto">
                                     <img
                                         src="User.png"
                                         alt="User"

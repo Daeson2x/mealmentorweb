@@ -75,7 +75,7 @@ export function AddCostumer() {
             <div className=' flex flex-col min-h-screen'>
             <TopLogo />
             <div className="flex flex-col flex-grow items-center bg-gray-100 p-4">
-                <div className="w-full max-w-3xl bg-white shadow-md rounded-lg p-6">
+                <div className="w-full max-w-3xl bg-white shadow-md rounded-lg p-6 lg:ml-60">
                     <Navigation />
                     <section className="mt-2">
                         <h1 className='text-3xl font-semibold mb-4 text-center'>Añadir cliente</h1>
