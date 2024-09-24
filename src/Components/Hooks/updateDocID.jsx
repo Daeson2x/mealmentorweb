@@ -11,6 +11,8 @@ export const updateDocID  = async (newData, collection, ID) =>{
             text: 'Actualizado correctamente!',
             icon: 'success',
             confirmButtonText: 'Aceptar'
+        }).then(() => {
+            window.location.reload();
         });
     } catch (error) {
         Swal.fire({

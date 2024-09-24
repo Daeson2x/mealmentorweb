@@ -35,38 +35,44 @@ export function ShowTips() {
 
     const dialog = activeDialog.isOpen && (
         <>
-            <div className="fixed inset-0 bg-black opacity-50" onClick={closeDialog}></div>
-            <dialog open className="fixed top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-lg w-120 z-50">
-                {dialogContent()}
-                <button onClick={closeDialog} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Cerrar</button>
-            </dialog>
+            {/* Fondo oscuro que cubre toda la pantalla */}
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={closeDialog}></div>
+
+            {/* Modal centrado */}
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+                    {dialogContent()}
+                    <button onClick={closeDialog} className="mt-4 w-full px-4 py-2 bg-red-500 text-white rounded active:scale-[.98] active:duration-75 transition-all hover:scale-[1.02] ease-in-out">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
         </>
     );
 
     return (
         <>
-  {ReactDOM.createPortal(dialog, document.body)}
-  {loading ? (
-    <h1 className="text-center text-lg">Cargando...</h1>
-  ) : (
-    <ol className="space-y-4 p-4 overflow-y-auto " style={{ maxHeight: "440px" }}>
-      {data?.map((tip) => (
-        <li key={tip.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center p-4">
-            <img src="recomendation.webp" alt="Imagen de consejo" className="w-12 h-12 rounded-full mb-2 sm:mb-0 sm:mr-4" />
-            <div className="flex-1">
-              <p className="font-semibold text-lg">{tip.Title}</p>
-            </div>
-            <div className="flex space-x-2 mt-2 sm:mt-0">
-              <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => showDialog('ver', tip)}>Ver</button>
-              <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', tip)}>Edit</button>
-            </div>
-          </div>
-        </li>
-      ))}
-    </ol>
-  )}
-</>
-
+            {ReactDOM.createPortal(dialog, document.body)}
+            {loading ? (
+                <h1 className="text-center text-lg">Cargando...</h1>
+            ) : (
+                <ul className="space-y-4 p-4 overflow-y-auto" style={{ maxHeight: "440px" }}>
+                    {data?.map((tip) => (
+                        <li key={tip.id} className="bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
+                            <div className="flex items-center p-4">
+                                <img src="recomendation.webp" alt="Imagen de consejo" className="w-12 h-12 rounded-full mr-4" />
+                                <div className="flex-1">
+                                    <p className="font-semibold text-lg">{tip.Title}</p>
+                                </div>
+                                <div className="flex space-x-2">
+                                    <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => showDialog('ver', tip)}>Ver</button>
+                                    <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', tip)}>Edit</button>
+                                </div>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </>
     );
 }

@@ -34,7 +34,9 @@ export default function Form() {
             text:"Has iniciado sesion correctamente.",
           
  
-          });
+          }).then(() => {
+            navigate('/Dashboard');
+        });
           
           navigate('/Dashboard');
         } else {
