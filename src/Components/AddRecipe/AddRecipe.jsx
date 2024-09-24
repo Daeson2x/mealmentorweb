@@ -166,19 +166,16 @@ export function AddRecipe(){
             </div>
             <div>
               <label>Horario:</label>
-              <input
-                type="text"
+              <select
                 name="schedule"
-                placeholder="Horario"
-                list="options"
                 required
                 className="w-full p-2 border border-gray-300 rounded-md"
-              />
-              <datalist id="options">
-                <option value="Desayuno" />
-                <option value="Comida" />
-                <option value="Cena" />
-              </datalist>
+              >
+                <option value="" disabled selected>Selecciona un horario</option>
+                <option value="Desayuno">Desayuno</option>
+                <option value="Comida">Comida</option>
+                <option value="Cena">Cena</option>
+              </select>
             </div>
           </div>
           <div>

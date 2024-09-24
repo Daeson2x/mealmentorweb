@@ -74,18 +74,18 @@ export function DialogUpdateRecipe({ recipe }) {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Horario:</label>
-                    <input 
-                        name='schedule' 
-                        defaultValue={recipe.schedule} 
-                        list='options' 
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                    />
-                    <datalist id='options'>
-                        <option value='Desayuno'>Desayuno</option>
-                        <option value='Comida'>Comida</option>
-                        <option value='Cena'>Cena</option>
-                    </datalist>
+                <label>Horario:</label>
+              <select
+              defaultValue={recipe.schedule}
+                name="schedule"
+                required
+                className="w-full p-2 border border-gray-300 rounded-md"
+              >
+                <option value="" disabled selected>Selecciona un horario</option>
+                <option value="Desayuno">Desayuno</option>
+                <option value="Comida">Comida</option>
+                <option value="Cena">Cena</option>
+              </select>
                 </div>
 
                 <div>
