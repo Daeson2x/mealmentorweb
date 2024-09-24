@@ -2,7 +2,7 @@
 export function DialogShowRecipe({ recipe }) {
     return (
         <>
-            <section className="p-6 bg-white rounded-lg shadow-md max-w-lg">
+            <section className="p-6 bg-white rounded-lg shadow-md max-w-lg max-h-96 overflow-y-auto">
                 <h1 className="text-2xl font-bold mb-4">{recipe.Title}</h1>
                 <div className="mb-4">
                     <p className="text-gray-600">Dificultad: {recipe.Difficulty}/10 | Tiempo: {recipe.estimatedTime}m</p>
