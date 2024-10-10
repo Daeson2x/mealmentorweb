@@ -2,14 +2,14 @@ import { useState } from "react";
 import ReactDOM from 'react-dom';
 import Swal from "sweetalert2";
 
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { dataBase } from '../../DataBase/Firebase';
 import { useDocs } from "../Hooks/useDocs";
 
 import { DialogShowCustomer } from "./Dialog/DialogShowCustomer";
 import { DialogUpdateCustomer } from "./DialogUpdate/DialogUpdateCustomer";
 
-const ActiveCustomer = async (active, ID) => {
+/*const ActiveCustomer = async (active, ID) => {
     try {
         const docRef = doc(dataBase, 'Customers', ID);
         await updateDoc(docRef, { Active: !active });
@@ -32,6 +32,29 @@ const ActiveCustomer = async (active, ID) => {
             timerProgressBar: true
         });
     }
+};*/
+const deleteCustomer = async (ID) => {
+  try {
+      const docRef = doc(dataBase, 'Customers', ID);
+      await deleteDoc(docRef);
+      Swal.fire({
+          icon: 'success',
+          title: 'Cliente eliminado',
+          text: 'El cliente fue eliminado correctamente.',
+          confirmButtonText: 'Aceptar'
+      }).then(() => {
+          window.location.reload();
+      });
+  } catch (error) {
+      console.error("Error deleting document: ", error);
+      Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Hubo un error al eliminar el cliente. Por favor, inténtalo de nuevo.',
+          timer: 1500,
+          timerProgressBar: true
+      });
+  }
 };
 
 export function ShowCustomers() {
@@ -101,10 +124,10 @@ export function ShowCustomers() {
               <div className="flex space-x-2 mt-2 sm:mt-0">
                 <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => showDialog('ver', customer)}>Ver</button>
                 <button 
-                  className={`px-3 py-1 rounded ${customer.Active ? 'bg-green-500' : 'bg-red-500'} text-white`} 
-                  onClick={() => ActiveCustomer(customer.Active, customer.id)}
+                  className={`px-3 py-1 rounded bg-green-500 text-white`} 
+                  onClick={() => deleteCustomer(customer.id)}
                 >
-                  {customer.Active ? 'Desactivar' : 'Activar'}
+                  Eliminar
                 </button>
                 <button className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" onClick={() => showDialog('act', customer)}>Edit</button>
               </div>
