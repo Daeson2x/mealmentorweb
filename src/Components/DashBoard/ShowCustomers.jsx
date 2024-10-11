@@ -2,7 +2,7 @@ import { useState } from "react";
 import ReactDOM from 'react-dom';
 import Swal from "sweetalert2";
 
-import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { doc, deleteDoc, getDoc } from 'firebase/firestore';
 import { dataBase } from '../../DataBase/Firebase';
 import { useDocs } from "../Hooks/useDocs";
 
@@ -11,8 +11,8 @@ import { DialogUpdateCustomer } from "./DialogUpdate/DialogUpdateCustomer";
 
 /*const ActiveCustomer = async (active, ID) => {
     try {
-        const docRef = doc(dataBase, 'Customers', ID);
-        await updateDoc(docRef, { Active: !active });
+        const docRefCustomer = doc(dataBase, 'Customers', ID);
+        await updateDoc(docRefCustomer, { Active: !active });
         Swal.fire({
             icon: 'success',
             title: 'Se han aplicado los cambios',
@@ -35,27 +35,93 @@ import { DialogUpdateCustomer } from "./DialogUpdate/DialogUpdateCustomer";
 };*/
 const deleteCustomer = async (ID) => {
   try {
-      const docRef = doc(dataBase, 'Customers', ID);
-      await deleteDoc(docRef);
-      Swal.fire({
-          icon: 'success',
-          title: 'Cliente eliminado',
-          text: 'El cliente fue eliminado correctamente.',
-          confirmButtonText: 'Aceptar'
-      }).then(() => {
-          window.location.reload();
-      });
+    // Referencia al documento del cliente
+    const docRefCustomer = doc(dataBase, 'Customers', ID);
+    const customerSnap = await getDoc(docRefCustomer);
+
+    if (!customerSnap.exists()) {
+      throw new Error('Customer not found');
+    }
+
+    // Obtener datos del cliente
+    const customerData = customerSnap.data();
+    const docRefPlan = customerData.plan_ID ? doc(dataBase, 'Plan', customerData.plan_ID) : null;  
+    const docRefRecord = customerData.record_ID ? doc(dataBase, 'Record', customerData.record_ID) : null;
+
+    // Inicializar datos
+    let currentPlanData = null;
+    let recordData = null;
+    let docRefPlanAnt = null;
+    let lastPlanData = null;
+
+    // Obtener datos del registro solo si existe
+    if (docRefRecord) {
+      const recordSnap = await getDoc(docRefRecord);
+      if (recordSnap.exists()) {
+        recordData = recordSnap.data();
+        docRefPlanAnt = recordData.plan_ID ? doc(dataBase, 'Plan', recordData.plan_ID) : null;
+
+        // Obtener datos del plan anterior
+        if (docRefPlanAnt) {
+          const lastPlanSnap = await getDoc(docRefPlanAnt);
+          lastPlanData = lastPlanSnap.data();
+        }
+      } else {
+        throw new Error('Record not found');
+      }
+    }
+
+    // Obtener datos del plan actual solo si existe
+    if (docRefPlan) {
+      const currentPlanSnap = await getDoc(docRefPlan);
+      if (currentPlanSnap.exists()) {
+        currentPlanData = currentPlanSnap.data();
+      } else {
+        console.log("Plan not found for the customer.");
+      }
+    }
+
+    // Mostrar los datos en consola para verificar
+    console.log("Customer Data:", customerData);
+    if (currentPlanData) {
+      console.log("Plan Data:", currentPlanData); 
+    }
+    if (recordData) {
+      console.log("Record Data:", recordData); 
+    }
+    if (lastPlanData) {
+      console.log("Previous Plan Reference:", lastPlanData);
+    }
+
+    // Eliminar documentos
+    await Promise.all([
+      deleteDoc(docRefCustomer),
+      docRefPlan ? deleteDoc(docRefPlan) : null,
+      docRefRecord ? deleteDoc(docRefRecord) : null,
+      docRefPlanAnt ? deleteDoc(docRefPlanAnt) : null
+    ]);
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Cliente eliminado',
+      text: 'El cliente fue eliminado correctamente.',
+      confirmButtonText: 'Aceptar'
+    }).then(() => {
+      window.location.reload();
+    });
   } catch (error) {
-      console.error("Error deleting document: ", error);
-      Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Hubo un error al eliminar el cliente. Por favor, inténtalo de nuevo.',
-          timer: 1500,
-          timerProgressBar: true
-      });
+    console.error("Error retrieving documents: ", error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Hubo un error al obtener los datos. Por favor, inténtalo de nuevo.',
+      timer: 1500,
+      timerProgressBar: true
+    });
   }
 };
+
+
 
 export function ShowCustomers() {
     const [loading, setLoading] = useState(false);
