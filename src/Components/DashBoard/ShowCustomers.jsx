@@ -45,7 +45,7 @@ const deleteCustomer = async (ID) => {
 
     // Obtener datos del cliente
     const customerData = customerSnap.data();
-    const docRefTracker = doc (dataBase, 'Trackers', customerData.fitTracker_ID)
+    const docRefTracker = customerData.fitTracker_ID ? doc (dataBase, 'Trackers', customerData.fitTracker_ID): null;
     const docRefPlan = customerData.plan_ID ? doc(dataBase, 'Plan', customerData.plan_ID) : null;  
     const docRefRecord = customerData.record_ID ? doc(dataBase, 'Record', customerData.record_ID) : null;
 
