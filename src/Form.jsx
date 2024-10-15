@@ -3,13 +3,10 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import CryptoJS from 'crypto-js';
 import { useState } from "react";
 import { dataBase } from './DataBase/Firebase';
-import * as React from 'react';
 import Swal from 'sweetalert2';
-
 
 export default function Form() {
   const [error, setError] = useState(null);
-  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
   const handleMove = async (event) => {
@@ -24,21 +21,20 @@ export default function Form() {
       if (!querySnapshot.empty) {
         setError(null);
         const userData = querySnapshot.docs[0].data();
-        setUserData(userData);
         const passSalt = fields.pass + userData.salt;
         const passHash = CryptoJS.SHA256(passSalt).toString(CryptoJS.enc.Hex);
+
         if (passHash === userData.passAdmin) {
+          // Almacenar el token en el localStorage
+          localStorage.setItem('authToken', 'token_prueba'); // Cambia 'your_generated_token' por un token real si es necesario
+
           Swal.fire({
-            icon:"success",
-            title:"Bienvenido",
-            text:"Has iniciado sesion correctamente.",
-          
- 
+            icon: "success",
+            title: "Bienvenido",
+            text: "Has iniciado sesión correctamente.",
           }).then(() => {
-            navigate('/Dashboard');
-        });
-          
-          navigate('/Dashboard');
+            navigate('/Dashboard'); // Redirigir al Dashboard
+          });
         } else {
           Swal.fire({
             icon: 'error',
@@ -65,14 +61,13 @@ export default function Form() {
   };
 
   return (
-  
     <div className="bg-white px-10 py-20 rounded-3xl border-gray-600">
       <h1 className="text-5xl font-semibold">Bienvenid@ de vuelta</h1>
       <p className="font-medium text-lg text-gray-500 mt-4">Por favor, introduce tus credenciales.</p>
       <form onSubmit={handleMove} className="mt-8">
         <div>
           <label className="text-lg font-medium">Email</label>
-          <input 
+          <input
             className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
             placeholder="Ingresa tu correo"
             name="user"

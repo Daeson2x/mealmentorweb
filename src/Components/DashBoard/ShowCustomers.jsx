@@ -45,6 +45,7 @@ const deleteCustomer = async (ID) => {
 
     // Obtener datos del cliente
     const customerData = customerSnap.data();
+    const docRefTracker = doc (dataBase, 'Trackers', customerData.fitTracker_ID)
     const docRefPlan = customerData.plan_ID ? doc(dataBase, 'Plan', customerData.plan_ID) : null;  
     const docRefRecord = customerData.record_ID ? doc(dataBase, 'Record', customerData.record_ID) : null;
 
@@ -96,6 +97,7 @@ const deleteCustomer = async (ID) => {
     // Eliminar documentos
     await Promise.all([
       deleteDoc(docRefCustomer),
+      docRefTracker ? deleteDoc(docRefTracker) : null,
       docRefPlan ? deleteDoc(docRefPlan) : null,
       docRefRecord ? deleteDoc(docRefRecord) : null,
       docRefPlanAnt ? deleteDoc(docRefPlanAnt) : null

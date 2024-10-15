@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import { generateSalt } from '../Logic/generateSalt.mjs';
 import CryptoJS from 'crypto-js';
 import { dataBase } from '../../DataBase/Firebase';
-import { collection, addDoc } from "firebase/firestore";
+import { doc, collection, addDoc, updateDoc } from "firebase/firestore";
 import Swal from 'sweetalert2';
 
 
@@ -29,26 +29,52 @@ export function AddCostumer() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const fields = Object.fromEntries(new window.FormData(event.target));
-
+    
+        // Procesar campos
         fields.Active = active;
         fields.Allergies = fields.Allergies.split(/,\s*|\s*y\s*/);
         fields.Preferences = fields.Preferences.split(/,\s*|\s*y\s*/);
         fields.plan_ID = null;
         fields.record_ID = null;
+        fields.fitTracker_ID = null;
+    
+        // Generar la contraseña con sal
         const saltRandom = generateSalt();
         const passwordWithSalt = fields.Password + saltRandom;
         const passHash = CryptoJS.SHA256(passwordWithSalt).toString(CryptoJS.enc.Hex);
         fields.Password = passHash;
         fields.Salt = saltRandom;
-
+    
         console.log(fields);
-
+    
         const addCustomerRef = collection(dataBase, 'Customers');
+    
+        // Agregar el documento en la colección Customers
         addDoc(addCustomerRef, fields)
+            .then((customerDocRef) => {
+                // Obtener el ID del cliente recién creado
+                const customerID = customerDocRef.id;
+    
+                // Crear el documento en la colección Trackers
+                const trackerData = {
+                    Fecha: [], // Arreglo vacío para las fechas
+                    usuarioID: customerID // Relacionar con el ID del cliente
+                };
+    
+                const addTrackerRef = collection(dataBase, 'Trackers');
+                return addDoc(addTrackerRef, trackerData).then((trackerDocRef) => {
+                    // Obtener el ID del Tracker recién creado
+                    const trackerID = trackerDocRef.id;
+    
+                    // Actualizar el cliente con el ID del Tracker (fitTracker_ID)
+                    const customerRef = doc(dataBase, 'Customers', customerID);
+                    return updateDoc(customerRef, { fitTracker_ID: trackerID });
+                });
+            })
             .then(() => {
                 Swal.fire({
                     title: '¡Cliente añadido!',
-                    text: 'El cliente fue añadido correctamente.',
+                    text: 'El cliente y su tracker fueron añadidos correctamente.',
                     icon: 'success',
                     confirmButtonText: 'Aceptar'
                 }).then(() => {
@@ -61,14 +87,27 @@ export function AddCostumer() {
             .catch((error) => {
                 Swal.fire({
                     title: 'Error',
-                    text: 'Hubo un error al añadir el cliente. Por favor, inténtalo de nuevo.',
+                    text: 'Hubo un error al añadir el cliente o el tracker. Por favor, inténtalo de nuevo.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
                 console.error("Error adding document: ", error);
             });
     };
-
+    
+    /*                          <input
+                                    name='Email'
+                                    placeholder='Correo'
+                                    type='email'
+                                    className='block w-full p-2 border border-gray-300 rounded-lg'
+                                    required
+                                    onChange={(e) => {
+                                        setChangeCard(prevState => ({
+                                            ...prevState,
+                                            Email: e.target.value
+                                        }));
+                                    }}
+                                />*/ 
 
     return (
         <>
@@ -136,6 +175,7 @@ export function AddCostumer() {
                                         }));
                                     }}
                                 />
+                                
                                 <input
                                     name='Password'
                                     placeholder='Contraseña'
