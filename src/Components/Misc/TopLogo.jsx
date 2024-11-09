@@ -34,7 +34,16 @@ export function TopLogo() {
     AddCustomer: '/AddCustomer',
     AddRecipe: '/AddRecipe',
     AddPlan: '/AddPlan',
+    LogIn: '/',
   };
+  const logOut = () => {
+    const authToken = localStorage.getItem('authToken');
+    if (authToken) {
+      localStorage.removeItem('authToken');
+    } else {
+      console.log("Error al intentar");
+    }
+  }
 
   return (
     <div className="navbar flex items-center p-2 bg-white border-b-4 relative">
@@ -88,6 +97,18 @@ export function TopLogo() {
               >
                 <img src="PlanAdd.png" alt="Añadir plan" className="w-5 h-5 mr-3" />
                 <span className="flex-1">Añadir plan</span>
+              </button>
+            </li>
+            <li>
+              <button
+                className="flex items-center w-full p-3 text-black rounded-md hover:bg-gray-100 transition-colors duration-200 text-sm font-sans font-medium leading-5 text-left whitespace-nowrap overflow-hidden text-ellipsis"
+                onClick={() => {
+                  logOut();
+                  navigate(pages.LogIn);}
+                  }
+              >
+                <i class="bi bi-box-arrow-left text-2xl"></i>
+                <span className="flex-1 ml-3">Salir</span>
               </button>
             </li>
           </ul>
